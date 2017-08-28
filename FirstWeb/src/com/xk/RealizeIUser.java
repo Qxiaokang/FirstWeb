@@ -16,7 +16,7 @@ public class RealizeIUser implements IUser {
 	private Connection connection;
 
 	@Override
-	public List<User> fidAllUsers() {
+	public List<User> findAllUsers() {
 		// TODO Auto-generated method stub
 		List<User> users = new ArrayList<User>();
 		try {
@@ -161,6 +161,27 @@ public class RealizeIUser implements IUser {
 			return user;
 		}
 		return user;
+	}
+
+	@Override
+	public boolean checkNameAndPwd(String name, String pwd) {
+		boolean b=false;
+		try {
+		connection=DBTest.getConnection();
+		String sql="select * from t_user where user_name=? and user_pwd=?";
+		PreparedStatement prepareStatement = connection.prepareStatement(sql);
+		prepareStatement.setString(1,name);
+		prepareStatement.setString(2, pwd);
+		ResultSet executeQuery = prepareStatement.executeQuery();
+		b= executeQuery.next();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			b=false;
+			return b;
+		}
+		// TODO Auto-generated method stub
+		return b;
 	}
 
 }

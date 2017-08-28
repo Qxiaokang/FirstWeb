@@ -1,5 +1,6 @@
 package com.xk;
 
+import java.awt.List;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -7,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.jws.soap.SOAPBinding.Use;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.soap.Detail;
 
+import com.xk.bean.User;
 import com.xk.in.IUser;
 import com.xk.utils.FactoryDao;
 
@@ -60,9 +64,26 @@ public class FirstServlet extends HttpServlet {
 			loadFirst(req, resp);
 		}else if(pathString.equals("/list")){
 			loadList(req, resp);
+		}else if(pathString.equals("/all")){
+			allDao(req, resp);
+			
 		}
 	}
-
+	private void allDao(HttpServletRequest req,HttpServletResponse resp){
+		try {
+		IUser iUser=(IUser) FactoryDao.getObject("User");
+		java.util.List<User> users=iUser.findAllUsers();
+		req.setAttribute("users", users);
+		RequestDispatcher rDispatcher=req.getRequestDispatcher("find.jsp");
+			rDispatcher.forward(req, resp);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private void loadFirst(HttpServletRequest req, HttpServletResponse resp) {
 		String nString = req.getParameter("name");
 		String pString = req.getParameter("pwd");

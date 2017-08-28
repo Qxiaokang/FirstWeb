@@ -10,6 +10,7 @@
 		<param-name>author</param-name>
 		<param-value>xk</param-value>
 		</init-param>
+		
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>firstServlet</servlet-name>
@@ -22,5 +23,20 @@
 		<exception-type></exception-type>
 		<location>/error.html</location>
 	</error-page>
-
+	<servlet>
+		<servlet-name>testWebApps</servlet-name>
+		<servlet-class>com.xk.utils.TestWebApps</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>testWebApps</servlet-name>
+		<url-pattern>/contents</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>addCookie</servlet-name>
+		<servlet-class>com.xk.AddCookieSL</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>addCookie</servlet-name>
+		<url-pattern>/cookie</url-pattern>
+	</servlet-mapping>
 </web-app>

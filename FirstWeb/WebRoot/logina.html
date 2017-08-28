@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>login.html</title>
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+a,img {
+	border: 0;
+}
+
+body {
+	overflow: hidden;
+	background: black;
+}
+form {
+	width: 30%;
+	height:30%;
+	background: aqua;
+	color: blue;
+	position:absolute;
+	border: 2;
+	margin:0 auto;
+	text-align: center;
+	margin-top: 30%;
+	margin-left: 30%;
+	display:table-cell;
+	vertical-align: middle;
+}
+
+div {
+	margin: 10px;
+}
+</style>
+
+<script>
+	window.console = window.console || function(t) {
+	};
+</script>
+
+<script src="js/prefixfree.min.js"></script>
+</head>
+<body>
+	<!-- <iframe src="loginb.html"  frameborder="0" scrolling="no">
+		<a href="loginb.html">你的浏览器不支持iframe页面嵌套，请点击这里访问页面内容。</a>
+	</iframe> -->
+	<form action="cookie" id="cell">
+		<div>
+			<span>账号：</span> <input type="text" name="name" />
+		</div>
+		<div>
+			<span>密码：</span> <input type="text" name="pwd" />
+		</div>
+		<div>
+			<a href="error.html">忘记密码？</a> <input type="submit" value="登 录"
+				style="margin-left: 20px;" />
+		</div>
+	</form>
+	<canvas id="canvas-club" width="1920" height="666"></canvas>
+	<script src="js/stopExecutionOnTimeout.js"></script>
+	<script>
+		var c = document.getElementById("canvas-club");
+		var ctx = c.getContext("2d");
+		var w = c.width = window.innerWidth;
+		var h = c.height = window.innerHeight;
+		var clearColor = 'rgba(0, 0, 0, .1)';
+		var max = 30;
+		var drops = [];
+
+		function random(min, max) {
+			return Math.random() * (max - min) + min;
+		}
+
+		function O() {
+		}
+
+		O.prototype = {
+			init : function() {
+				this.x = random(0, w);
+				this.y = 0;
+				this.color = 'hsl(180, 100%, 50%)';
+				this.w = 2;
+				this.h = 1;
+				this.vy = random(4, 5);
+				this.vw = 3;
+				this.vh = 1;
+				this.size = 2;
+				this.hit = random(h * .8, h * .9);
+				this.a = 1;
+				this.va = .96;
+			},
+			draw : function() {
+				if (this.y > this.hit) {
+					ctx.beginPath();
+					ctx.moveTo(this.x, this.y - this.h / 2);
+
+					ctx.bezierCurveTo(this.x + this.w / 2, this.y - this.h / 2,
+							this.x + this.w / 2, this.y + this.h / 2, this.x,
+							this.y + this.h / 2);
+
+					ctx.bezierCurveTo(this.x - this.w / 2, this.y + this.h / 2,
+							this.x - this.w / 2, this.y - this.h / 2, this.x,
+							this.y - this.h / 2);
+
+					ctx.strokeStyle = 'hsla(180, 100%, 50%, ' + this.a + ')';
+					ctx.stroke();
+					ctx.closePath();
+
+				} else {
+					ctx.fillStyle = this.color;
+					ctx.fillRect(this.x, this.y, this.size, this.size * 5);
+				}
+				this.update();
+			},
+			update : function() {
+				if (this.y < this.hit) {
+					this.y += this.vy;
+				} else {
+					if (this.a > .03) {
+						this.w += this.vw;
+						this.h += this.vh;
+						if (this.w > 100) {
+							this.a *= this.va;
+							this.vw *= .98;
+							this.vh *= .98;
+						}
+					} else {
+						this.init();
+					}
+				}
+
+			}
+		}
+
+		function resize() {
+			w = c.width = window.innerWidth;
+			h = c.height = window.innerHeight;
+		}
+
+		function setup() {
+			for (var i = 0; i < max; i++) {
+				(function(j) {
+					setTimeout(function() {
+						var o = new O();
+						o.init();
+						drops.push(o);
+					}, j * 200)
+				}(i));
+			}
+		}
+
+		function anim() {
+			ctx.fillStyle = clearColor;
+			ctx.fillRect(0, 0, w, h);
+			for ( var i in drops) {
+				drops[i].draw();
+			}
+			requestAnimationFrame(anim);
+		}
+
+		window.addEventListener("resize", resize);
+
+		setup();
+		anim();
+		//@ sourceURL=pen.js
+	</script>
+
+
+	<script>
+		if (document.location.search.match(/type=embed/gi)) {
+			window.parent.postMessage("resize", "*");
+		}
+	</script>
+</body>
+</html>
