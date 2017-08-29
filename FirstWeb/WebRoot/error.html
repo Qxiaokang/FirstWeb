@@ -8,12 +8,21 @@
     <meta name="content-type" content="text/html; charset=UTF-8">
     
     <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
-	
+	<script type="text/javascript">
+
+	</script>
   </head>
   
   <body>
-    <script type="text/javascript" charset="utf-8">
-		window.alert("系统出现错误，请稍后再试！")
-	</script>
+	<script type="text/javascript">
+	function show_confirm() {
+		var r = confirm("Press a button!");
+		if (r == true) {
+			alert("You pressed OK!");
+		} else {
+			alert("You pressed Cancel!");
+		}
+	}
+</script>
   </body>
 </html>

@@ -42,8 +42,7 @@ public class AddCookieSL extends HttpServlet{
 			cookie2.setMaxAge(20);
 			resp.addCookie(cookie1);
 			resp.addCookie(cookie2);
-			printWriter.write("<span>login successful</span>");
-			
+			resp.sendRedirect("index.html");
 		}
 		printWriter.close();
 		}

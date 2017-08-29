@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="zh">
 <head>
-<title>login.html</title>
+<meta name="content-type" content="text/html; charset=UTF-8">
+<title>登 录</title>
 <meta name="keywords" content="keyword1,keyword2,keyword3">
 <meta name="description" content="this is my page">
-<meta name="content-type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<!-- WEB字体调用 -->
+<link
+	href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:700'
+	rel='stylesheet' type='text/css'>
 <style type="text/css">
 * {
 	margin: 0;
@@ -22,49 +25,104 @@ body {
 	overflow: hidden;
 	background: black;
 }
-form {
-	width: 30%;
-	height:30%;
-	background: aqua;
+
+.login {
+	width: 400px;
+	height: 200px;
+	background-color: rgba(111, 118, 145, 0.5);
 	color: blue;
-	position:absolute;
-	border: 2;
-	margin:0 auto;
+	position: absolute;
+	border: 2, solid;
 	text-align: center;
-	margin-top: 30%;
-	margin-left: 30%;
-	display:table-cell;
-	vertical-align: middle;
+	left: 50%;
+	margin-left: -200px;
+	top: 50%;
+	margin-top: -100px;
+	padding-top: 60px;
+	font-size: 20px;
+	font-family: \5B8B\4F53;
 }
 
 div {
-	margin: 10px;
+	height: 65px;
+	vertical-align: middle;
+}
+
+.tx {
+	height: 30px;
+	width: 200px;
+	font-size: 15px;
+}
+
+input.button {
+	position: relative;
+	margin-left: 50px;
+	color: rgba(255, 255, 255, 1);
+	text-decoration: none;
+	background-color: rgba(219, 87, 5, 1);
+	font-family: 'Yanone Kaffeesatz';
+	font-weight: 700;
+	font-size: 20px;
+	padding: 1px;
+	margin: 0, auto;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px
+		rgba(0, 0, 0, .7);
+	-moz-box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px
+		rgba(0, 0, 0, .7);
+	box-shadow: 0px 3px 0px rgba(219, 31, 5, 1), 0px 3px 6px
+		rgba(0, 0, 0, .7);
+	width: 100px;
+	text-align: center;
+	-webkit-transition: all .1s ease;
+	-moz-transition: all .1s ease;
+	-ms-transition: all .1s ease;
+	-o-transition: all .1s ease;
+	transition: all .1s ease;
+}
+
+input.button:active {
+	position: relative;
+	-webkit-box-shadow: 0px px 0px rgba(219, 31, 5, 1), 0px 1px 2px
+		rgba(0, 0, 0, .9);
+	-moz-box-shadow: 0px 1px 0px rgba(219, 31, 5, 1), 0px 1px 2px
+		rgba(0, 0, 0, .9);
+	box-shadow: 0px 1px 0px rgba(219, 31, 5, 1), 0px 1px 2px
+		rgba(0, 0, 0, .9);
+	top: 3px;
 }
 </style>
-
+<!-- 黑体 转unicode为 \9ED1\4F53
+宋体 转unicode为 \5B8B\4F53
+微软雅黑 转unicode为 \5FAE\8F6F\96C5\9ED -->
 <script>
 	window.console = window.console || function(t) {
 	};
 </script>
 
 <script src="js/prefixfree.min.js"></script>
+
 </head>
 <body>
 	<!-- <iframe src="loginb.html"  frameborder="0" scrolling="no">
 		<a href="loginb.html">你的浏览器不支持iframe页面嵌套，请点击这里访问页面内容。</a>
 	</iframe> -->
-	<form action="cookie" id="cell">
-		<div>
-			<span>账号：</span> <input type="text" name="name" />
-		</div>
-		<div>
-			<span>密码：</span> <input type="text" name="pwd" />
-		</div>
-		<div>
-			<a href="error.html">忘记密码？</a> <input type="submit" value="登 录"
-				style="margin-left: 20px;" />
-		</div>
-	</form>
+	<div class="login">
+		<form action="cookie" method="post">
+			<div>
+				<label>账号：</label> <input type="text" name="name" class="tx" />
+			</div>
+			<div>
+				<label>密码：</label> <input type="password" name="pwd" class="tx" />
+			</div>
+			<div>
+				<a href="error.html">忘记密码？</a><input type="submit" value="登   录"
+					class="button" />
+			</div>
+		</form>
+	</div>
 	<canvas id="canvas-club" width="1920" height="666"></canvas>
 	<script src="js/stopExecutionOnTimeout.js"></script>
 	<script>
