@@ -8,21 +8,22 @@
     <meta name="content-type" content="text/html; charset=UTF-8">
     
     <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
-	<script type="text/javascript">
 
-	</script>
   </head>
   
   <body>
 	<script type="text/javascript">
 	function show_confirm() {
-		var r = confirm("Press a button!");
+		var r = confirm("系统出现错误，请重试！");
 		if (r == true) {
-			alert("You pressed OK!");
+			//window.navigate("logina.html");
+			window.close();
+			
 		} else {
-			alert("You pressed Cancel!");
+			window.history.back(-1);
 		}
 	}
+	window.onload=show_confirm;
 </script>
   </body>
 </html>
