@@ -34,7 +34,8 @@ public class AddCookieSL extends HttpServlet{
 			}
 		}
 		if(!b){
-			printWriter.write("<span>login failed</span>");
+			printWriter.write("<script type='text/javascript'>alert('用户名或密码错误，请重新输入！');window.history.back(-1);</script>");
+		//window.location.href='index.html'
 		}else {
 			Cookie cookie1=new Cookie("name", nameString);
 			Cookie cookie2=new Cookie("pwd", pwdString);

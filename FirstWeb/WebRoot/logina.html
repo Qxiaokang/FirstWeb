@@ -44,7 +44,7 @@ body {
 }
 
 div {
-	height: 65px;
+	height: 50px;
 	vertical-align: middle;
 }
 
@@ -93,6 +93,14 @@ input.button:active {
 		rgba(0, 0, 0, .9);
 	top: 3px;
 }
+
+.hint {
+	font-size: 18px;
+	color: red;
+	outline: none;
+	background: none;
+	border: none;
+}
 </style>
 <!-- 黑体 转unicode为 \9ED1\4F53
 宋体 转unicode为 \5B8B\4F53
@@ -103,6 +111,59 @@ input.button:active {
 </script>
 
 <script src="js/prefixfree.min.js"></script>
+<script type="text/javascript">
+	/**
+	 * 去掉输入空格
+	 * @param num
+	 */
+	function textSet(num) {
+		/*
+		var str=document.getElementById("password").value;
+		var value=str.replace(/^ +| +$/g,'');
+		document.getElementById("password").value=value;
+		 */
+		var str = num.value;
+		var value = str.replace(/^ +| +$/g, '');
+		num.value = value;
+
+	}
+    /**
+    *禁止输入空格
+    */
+	function banInputSapce(e) {
+		var keynum;
+		if (window.event) // IE
+		{
+			keynum = e.keyCode;
+		} else if (e.which) // Netscape/Firefox/Opera
+		{
+			keynum = e.which;
+		}
+		window.console.log("keyCode" + keynum);
+		if (keynum == 32) {
+			return false;
+		}
+		return true;
+	}
+</script>
+<script type="text/javascript">
+	function checkuser() {
+		var name = document.getElementById("name").value;
+		var pwd = document.getElementById("pwd").value;
+		if (name == null || name == "") {
+			//alert("name is null");
+			document.getElementById("hinttext").value = "请输入用户名...";
+			return false;
+		} else if (pwd == null || pwd == "") {
+			//alert("pwd is null");
+			document.getElementById("hinttext").value = "请输入密码...";
+			return false;
+		} else {
+			document.getElementById("hinttext").value = "";
+			return true;
+		}
+	}
+</script>
 
 </head>
 <body>
@@ -110,16 +171,23 @@ input.button:active {
 		<a href="loginb.html">你的浏览器不支持iframe页面嵌套，请点击这里访问页面内容。</a>
 	</iframe> -->
 	<div class="login">
-		<form action="cookie" method="post">
+		<form action="cookie" method="post" onsubmit="return checkuser()">
 			<div>
-				<label>账号：</label> <input type="text" name="name" class="tx" />
+				<label>账号：</label> <input type="text" name="name" class="tx"
+					id="name" placeholder="请输入用户名" onkeypress="return banInputSapce(event)" />
 			</div>
 			<div>
-				<label>密码：</label> <input type="password" name="pwd" class="tx" />
+				<label>密码：</label> <input type="password" name="pwd" class="tx"
+					id="pwd" placeholder="请输入密码"
+					onkeypress="return banInputSapce(event)" />
 			</div>
 			<div>
 				<a href="error.html">忘记密码？</a><input type="submit" value="登   录"
 					class="button" />
+			</div>
+			<div>
+				<input type="text" value="" class="hint" id="hinttext"
+					disabled="disabled" />
 			</div>
 		</form>
 	</div>

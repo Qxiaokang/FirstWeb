@@ -87,6 +87,7 @@ public class FirstServlet extends HttpServlet {
 	private void loadFirst(HttpServletRequest req, HttpServletResponse resp) {
 		String nString = req.getParameter("name");
 		String pString = req.getParameter("pwd");
+		String sexString=req.getParameter("sex");
 		System.out.println("n:" + nString + "  p:" + pString);
 		try {
 			resp.setContentType("text/html; charset=utf-8");

@@ -17,10 +17,9 @@
 		var r = confirm("系统出现错误，请重试！");
 		if (r == true) {
 			//window.navigate("logina.html");
-			window.close();
-			
+				window.history.back(-1);
 		} else {
-			window.history.back(-1);
+			window.close();
 		}
 	}
 	window.onload=show_confirm;
