@@ -1,14 +1,32 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-<title>用户注册</title>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 
-<meta name="keywords" content="keyword1,keyword2,keyword3">
-<meta name="description" content="this is my page">
-<meta name="content-type" content="text/html; charset=UTF-8">
-<!-- <meta http-equiv="refresh" content="3; url='logina.html'" > -->
-<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    
+    <title>用 户 注 册</title>
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+
+ <link rel="stylesheet" type="text/css" href="css/style.css">
+ <% 
+ 	Object object=session.getAttribute("user");
+ 	if(object==null){
+ 		response.sendRedirect("logina.html");
+ 	}
+ %>
 </head>
 <style type="text/css">
 <!--
@@ -194,9 +212,6 @@ select {
 		<input type="button" value="返回" id="move" onclick="removView()"
 			style="left: 100px;" /> <input type="button" value="获取浏览器信息"
 			onclick="getBrowser()" />
-		<div>
-		<input type="file" />
-		</div>
 	</div>
 </body>
 </html>

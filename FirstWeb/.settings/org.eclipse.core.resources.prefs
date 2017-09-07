@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+encoding//WebRoot/adduser.jsp=UTF-8
+encoding//WebRoot/complist.jsp=UTF-8
 encoding//WebRoot/error.html=UTF-8
 encoding//WebRoot/js/prefixfree.min.js=UTF-8
 encoding//WebRoot/js/stopExecutionOnTimeout.js=UTF-8

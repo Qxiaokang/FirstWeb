@@ -1,10 +1,41 @@
-﻿<!DOCTYPE html>
+<%@page import="com.xk.bean.ComputerDao"%>
+<%@page import="com.xk.bean.Computer"%>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta name="content-type" content="text/html; charset=UTF-8">
+<%-- <base href="<%=basePath%>"> --%>
+
 <title>主 页</title>
-<meta name="keywords" content="keyword1,keyword2,keyword3">
-<meta name="description" content="this is my page">
+
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="This is my page">
+<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+<%
+	Object object = session.getAttribute("user");
+	if (object == null) {
+%>
+<script type="text/javascript">
+	alert("请先登录！");
+	window.location = "logina.html";
+</script>
+<%
+	//response.sendRedirect("logina.html");
+	}
+%>
+
 <style type="text/css">
 body {
 	background-image: url("img/systembg1.jpg");
@@ -236,7 +267,7 @@ div .sb-icon:before {
 		var deg = 180 / n;
 		var click = 0;
 		var idx = 0;
-		var lastindex=-1;
+		var lastindex = -1;
 		for (var i = 0; i < n; i++) { //页面加载完成展开卡片
 			var tdeg = (i <= n / 2) ? -(n / 2 - i) * deg : (i - n / 2) * deg;
 			cards[i].style.webkitTransform = "rotate(" + tdeg + "deg)";
@@ -270,7 +301,7 @@ div .sb-icon:before {
 
 		};
 		function change(index) {
-		    idx++;
+			idx++;
 			for (var i = 0; i <= index; i++) {
 				var tdeg = -(index - i) * deg;
 				cards[i].style.webkitTransform = "rotate(" + tdeg + "deg)";
@@ -288,16 +319,23 @@ div .sb-icon:before {
 				cards[i].style.transform = "rotate(" + tdeg + "deg)";
 			}
 			//连续点击再次的事件
-			if (lastindex==index&&idx%2==0) {
-				idx=0;
-				window.location.href = "adduser.html";
+			window.console.log("index:" + index + "   lastindex:" + lastindex);
+			if (lastindex == index && idx % 2 == 0) {
+				idx = 0;
+				if (index == 1) {
+					window.location.href = "adduser.jsp";
+				} else if (index == 2) {
+
+					window.location.href = "complist.do";
+				}
 			}
-			lastindex=index;
+			lastindex = index;
 		}
 	};
 </script>
 </head>
 <body>
+
 	<div id="sb-container" class="sb-container">
 		<div>
 			<span class="sb-icon icon-cog"></span>
@@ -308,7 +346,7 @@ div .sb-icon:before {
 		<div>
 			<span class="sb-icon icon-flight"></span>
 			<h4>
-				<span>模式</span>
+				<span>管理</span>
 			</h4>
 		</div>
 		<div>

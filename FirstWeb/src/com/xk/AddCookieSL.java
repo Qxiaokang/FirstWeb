@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
+import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.xk.in.IUser;
 import com.xk.utils.FactoryDao;
@@ -25,6 +27,7 @@ public class AddCookieSL extends HttpServlet{
 		IUser iUser=(IUser) FactoryDao.getObject("User");
 		String nameString=req.getParameter("name");
 		String pwdString=req.getParameter("pwd");
+		System.err.println("sessionId:"+req.getSession().getId());
 		boolean b=iUser.checkNameAndPwd(nameString,
 				pwdString);
 		Cookie[] cookies = req.getCookies();
@@ -39,11 +42,17 @@ public class AddCookieSL extends HttpServlet{
 		}else {
 			Cookie cookie1=new Cookie("name", nameString);
 			Cookie cookie2=new Cookie("pwd", pwdString);
-			cookie1.setMaxAge(20);
-			cookie2.setMaxAge(20);
+			cookie1.setPath("/FirstWeb");
+			cookie2.setPath("/FirstWeb");
+			//cookie1.setMaxAge(60*60*24);
+			//cookie2.setMaxAge(60*60*24);
 			resp.addCookie(cookie1);
 			resp.addCookie(cookie2);
-			resp.sendRedirect("index.html");
+			System.out.println("add cookie  successful");
+			HttpSession session = req.getSession();
+			session.setMaxInactiveInterval(60);//session失效60S
+			session.setAttribute("user", iUser.findUserByName(nameString));
+			resp.sendRedirect("index.jsp");
 		}
 		printWriter.close();
 		}

@@ -19,7 +19,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
+<% 
+	//session验证
+	Object object= session.getAttribute("user");
+	if(object==null){
+	    
+		response.sendRedirect("logina.html");
+	}
+%>
   </head>
   
   <body>
