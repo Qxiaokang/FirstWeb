@@ -95,7 +95,7 @@ input.button:active {
 }
 
 .hint {
-	font-size: 18px;
+	font-size: 15px;
 	color: red;
 	outline: none;
 	background: none;
@@ -127,9 +127,9 @@ input.button:active {
 		num.value = value;
 
 	}
-    /**
-    *禁止输入空格
-    */
+	/**
+	 *禁止输入空格
+	 */
 	function banInputSapce(e) {
 		var keynum;
 		if (window.event) // IE
@@ -147,6 +147,7 @@ input.button:active {
 	}
 </script>
 <script type="text/javascript">
+	var click = false;
 	function checkuser() {
 		var name = document.getElementById("name").value;
 		var pwd = document.getElementById("pwd").value;
@@ -159,9 +160,63 @@ input.button:active {
 			document.getElementById("hinttext").value = "请输入密码...";
 			return false;
 		} else {
-			document.getElementById("hinttext").value = "";
-			return true;
+			if (!click) {
+				document.getElementById("hinttext").value = "登录中...";
+				checkPwd();
+			}
 		}
+	}
+	function getXMLHttpRequest() {
+		var xhr = null;
+		if ((typeof XMLHttpRequest) != "undefined") {
+			xhr = new XMLHttpRequest();
+		} else {
+			xhr = new ActiveXObject("Microsoft.XMLHttp");
+		}
+		return xhr;
+	}
+	function checkPwd() {
+		click = true;
+		var xhr = getXMLHttpRequest();
+		xhr.open("post", "cookie", true);
+		xhr.setRequestHeader("Content-Type",
+				"application/x-www-form-urlencoded");
+		xhr.onreadystatechange = function() {
+		window.console.log("readyState:"+xhr.readyState);
+			if (xhr.readyState == 4) {
+			window.console.log("status:"+xhr.status);
+				if (xhr.status == 200) {
+					var hint = xhr.responseText;
+					document.getElementById("hinttext").value = hint;
+					if ("登录成功！" == hint) {
+						window.location.href = "index.jsp";
+						document.getElementById("hinttext").value = "";
+						click=false;
+					}else{
+						click=false;
+					}
+				} else {
+					document.getElementById("hinttext").value = "系统错误，请稍后再试...";
+					click=false;
+				}
+			} else {
+				document.getElementById("hinttext").value = "登录中...";
+			}
+		};
+		xhr.send("name=" + document.getElementById("name").value + "&pwd="
+				+ document.getElementById("pwd").value);
+	}
+	document.onkeydown = keyDownSearch;
+	function keyDownSearch(e) {
+		// 兼容FF和IE和Opera    
+		var theEvent = e || window.event;
+		var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+		if (code == 13) {
+			//alert('回车');//具体处理函数    
+			checkuser();
+			return false;
+		}
+		return true;
 	}
 </script>
 
@@ -171,10 +226,11 @@ input.button:active {
 		<a href="loginb.html">你的浏览器不支持iframe页面嵌套，请点击这里访问页面内容。</a>
 	</iframe> -->
 	<div class="login">
-		<form action="cookie" method="post" onsubmit="return checkuser()">
+		<form action="cookie" method="post">
 			<div>
 				<label>账号：</label> <input type="text" name="name" class="tx"
-					id="name" placeholder="请输入用户名" onkeypress="return banInputSapce(event)" />
+					id="name" placeholder="请输入用户名"
+					onkeypress="return banInputSapce(event)" />
 			</div>
 			<div>
 				<label>密码：</label> <input type="password" name="pwd" class="tx"
@@ -182,8 +238,8 @@ input.button:active {
 					onkeypress="return banInputSapce(event)" />
 			</div>
 			<div>
-				<a href="error.html">忘记密码？</a><input type="submit" value="登   录"
-					class="button" />
+				<a href="error.html">忘记密码？</a><input type="button" value="登   录"
+					class="button" onclick="checkuser()" />
 			</div>
 			<div>
 				<input type="text" value="" class="hint" id="hinttext"

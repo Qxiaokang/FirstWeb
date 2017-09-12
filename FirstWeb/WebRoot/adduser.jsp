@@ -1,4 +1,6 @@
+<%@page import="com.xk.bean.User"%>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -131,6 +133,19 @@ select {
 		document.write(msg);
 	}
 	window.onload = provinceChange;
+	function getXMLHttpRequest(){
+		var xhr=null;
+		if((typeof XMLHttpRequest)!="undefined"){
+			xhr=new XMLHttpRequest();
+		}else {
+			xhr=new ActiveXObject("Microsoft.XMLHttp");
+		}
+		return xhr;
+	}
+	function f1(){
+	    var xhr=getXMLHttpRequest();
+	    alert(xhr);
+	}
 </script>
 
 <script type="text/javascript">
@@ -175,6 +190,7 @@ select {
 </script>
 <body>
 	<canvas id="cav" style="display: none;"></canvas>
+	<div style="text-align: right; margin-right: 10px;"><span>当前在线人数：</span><span><%=application.getAttribute("count")%></span></div>
 	<div id="bd">
 		<form action="first.do" method="post">
 			<div class="con">
@@ -203,6 +219,10 @@ select {
 					onclick="$('img1').src='checkCode.do?'+Math.random();"
 					style="font-size: 10px;">看不清，换一张？</a>
 			</div>
+			<div class="con">
+					<span class="sp">照片</span>
+					<input type="file" value="选择">
+			</div>
 			<div>
 				<input type="submit" value="添加" /> <a href="list.do">查看</a> <a
 					onclick="queryCity()">all</a> <input type="button" id="ad"
@@ -210,8 +230,10 @@ select {
 			</div>
 		</form>
 		<input type="button" value="返回" id="move" onclick="removView()"
-			style="left: 100px;" /> <input type="button" value="获取浏览器信息"
-			onclick="getBrowser()" />
+			style="left: 100px;" /> <a href="javascript;"
+			onclick="getBrowser()">get Browser message</a>
+		<a href="javascript;" onclick="f1()">get XMLHttpRequest</a>	
 	</div>
+	
 </body>
 </html>

@@ -1,3 +1,5 @@
+<%@page import="com.xk.in.Cart"%>
+<%@page import="com.xk.in.CartItem"%>
 <%@page import="com.xk.bean.Computer"%>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%
@@ -12,7 +14,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>购买商品</title>
+<title>购物车</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -90,7 +92,7 @@ input[type=button]:HOVER {
 		window.console.log("num"+n);
 		$("comnum"+index).value=n;
 			if(array.length==0){
-			window.console.log("arraylength==0");
+			window.console.log("arraylength==0")
 			array[0]=[index,n,";"];
 			}else{
 			  for(var i=0; i<array.length; i++){
@@ -116,29 +118,14 @@ input[type=button]:HOVER {
 		}else{
 			var n=parseInt(num)-1;
 			$("comnum"+index).value=n;
-			if(array.length==0){
-			window.console.log("arraylength==0");
-			array[0]=[index,n,";"];
-			}else{
-			  for(var i=0; i<array.length; i++){
-				window.console.log("i:"+i+"array:"+array[i]);
-				if(array[i][0]==index){
-					b=true;
-					isi=i;
-					break;
-				}
-			}
-			if(b){
-				array[isi]=[index,n,";"];}
-			else{
-				array[array.length]=[index,n,";"];
-			    }
-		}
 		}
 	}
 	function addBuy() {
 		window.console.log("messages:"+array.length);
 		location.href="buy.do?array="+array;
+	}
+	function deleteAll() {
+		window.location.href="deletecom.do?id=-1";
 	}
 </script>
 </head>
@@ -148,7 +135,7 @@ input[type=button]:HOVER {
 			<td>
 				<table width="100%" id="t2">
 					<tr>
-						<td><a href="#">主页</a>&nbsp;|&nbsp;<a href="#">笔记本订购</a>&nbsp;|&nbsp;商品列表</td>
+						<td><a href="#">主页</a>&nbsp;|&nbsp;<a href="#">笔记本订购</a>&nbsp;|&nbsp;购物车信息</td>
 					</tr>
 				</table> <br>
 				<table class="tableborder" cellpadding="0" cellspacing="0"
@@ -156,46 +143,46 @@ input[type=button]:HOVER {
 					<tr class="title">
 						<td class="bg1" width="10%"><b>型号</b></td>
 						<td class="bg1" width="30%"><b>产品图片</b></td>
-						<td class="bg1" width="20%"><b>产品说明</b></td>
 						<td class="bg1" width="10%"><b>产品报价</b></td>
-						<td class="bg1" width="10%"><b>库存</b></td>
+						<td class="bg1" width="10%"><b>购买数量</b></td>
 						<td class="bg1" width="20%"><b>-</b></td>
 					</tr>
 					<%
-						List<Computer> list = (List<Computer>) request
-								.getAttribute("computers");
+						List<CartItem> list = (List<CartItem>) request
+								.getAttribute("carts");
 						for (int i = 0; i < list.size(); i++) {
-							Computer computer = list.get(i);
+						    CartItem cartItem=list.get(i);
+							Computer computer = cartItem.getComputer();
 					%>
 					<tr class="trcomp">
 						<td><%=computer.getModel()%></td>
 						<td><img src="img/<%=computer.getPic()%>" width="200"
 							height="150" /></td>
-						<td><%=computer.getDescriptionString()%></td>
 						<td><%=computer.getPrice()%></td>
-						<td><%=computer.getRepertory()%></td>
 						<td><input type="button" value="-"
 							onclick="delCt(<%=computer.getId()%>)" /><input
 							id="comnum<%=computer.getId()%>" type="text" readonly="readonly"
 							size="1" value="<%=computer.getBuynum()%>"><input type="button" value="+"
 							onclick="addCt(<%=computer.getId()%>,<%=computer.getRepertory()%>)">
 						</td>
+						<td><a href="deletecom.do?id=<%=computer.getId()%>">删除</a></td>
 					</tr>
 					<tr>
 						<td colspan="6" class="line"></td>
-					</tr>
-
+					</tr>	
 					<%
 						}
 					%>
 				</table>
+				<br>
+				<div style="text-align: right; margin-right: 10px;">应付金额：￥<%=Cart.getInstance().getTotalPrice()%></div>
+				<br>
+				<div style="text-align: right; margin-right: 10px;"><input type="button" value="立即支付" class="buy"></div>
 			</td>
 		</tr>
 	</table>
-	<div class="bt">
-		<input class="buy" type="button" value="立即购买" title="点击进入下一步，确认购买信息！" /><input
-			class="buy" title="加入购物车" type="button" value="加入购物车"
-			style="margin-left: 10px;" onclick="addBuy()" />
-	</div>
+	<center><input class="buy" type="button" value="返回商品列表"  onclick="javascript:;window.location.href='complist.do';"/><input class="buy" type="button" value="清空购物车" style="margin-left: 10px;"  
+		onclick="deleteAll()"
+	/> </center>
 </body>
 </html>

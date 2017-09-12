@@ -11,7 +11,11 @@ import java.util.List;
 
 import com.xk.bean.User;
 import com.xk.in.IUser;
-
+/**
+ * 
+ * @author Admin
+ *	user tool
+ */
 public class RealizeIUser implements IUser {
 	private Connection connection;
 

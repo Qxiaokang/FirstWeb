@@ -5,6 +5,13 @@ public class Computer {
 	private String model;
 	private String pic;
 	private String price;
+	private int buynum;
+	public int getBuynum() {
+		return buynum;
+	}
+	public void setBuynum(int buynum) {
+		this.buynum = buynum;
+	}
 	public String getPrice() {
 		return price;
 	}
@@ -35,13 +42,13 @@ public class Computer {
 	public void setDescriptionString(String descriptionString) {
 		this.descriptionString = descriptionString;
 	}
-	public String getRepertory() {
+	public int getRepertory() {
 		return repertory;
 	}
-	public void setRepertory(String repertory) {
+	public void setRepertory(int repertory) {
 		this.repertory = repertory;
 	}
 	private String descriptionString;
-	private String repertory;
+	private int repertory;
 	
 }

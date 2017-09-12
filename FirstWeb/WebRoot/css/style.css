@@ -7,16 +7,16 @@ body{
 	background-attachment: fixed;
 	background-size: 100%;
 }
-a{
+a:link{
 	color:blue;
-	font-size:20px;
-	font-style:italic;
-	
+	font-style:intalic;
+	font-size:15px;
+}
+a:visited{
+	color: gray;
+	font-style:normal;
+	decoration:none;
 }
 a:hover{
-	color: red;
-}
-a:link{
-	color:green;
-	decoration:none;
+	color:red;	
 }

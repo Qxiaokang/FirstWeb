@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.plugins.jpeg.JPEGImageReadParam;
@@ -32,6 +33,8 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 import com.xk.bean.Computer;
 import com.xk.bean.ComputerDao;
 import com.xk.bean.User;
+import com.xk.in.Cart;
+import com.xk.in.CartItem;
 import com.xk.in.IUser;
 import com.xk.utils.FactoryDao;
 
@@ -42,6 +45,8 @@ public class FirstServlet extends HttpServlet {
 	private ResultSet executeQuery;
 	private boolean isnull = false;
 	private Connection connection = null;
+	private User user=null;
+	private java.util.List<Computer> computers = new ArrayList<Computer>();
 
 	public FirstServlet() {
 		System.out.println("FirstServlet---构造");
@@ -70,9 +75,16 @@ public class FirstServlet extends HttpServlet {
 		String pathString = uriString.substring(uriString.lastIndexOf("/"),
 				uriString.lastIndexOf("."));
 		System.out.println("request---uriString:" + uriString);
+		//get init param
 		ServletConfig servletConfig = getServletConfig();
 		String author = servletConfig.getInitParameter("author");
 		System.out.println("author:" + author);
+		HttpSession session=req.getSession();
+		if (session.getAttribute("user") == null) {
+			resp.sendRedirect("logina.html");
+			return;
+		}
+		user=(User) req.getSession().getAttribute("user");
 		if (pathString.equals("/first")) {
 			loadFirst(req, resp);
 		} else if (pathString.equals("/list")) {
@@ -84,12 +96,80 @@ public class FirstServlet extends HttpServlet {
 		} else if (pathString.equals("/complist")) {
 			System.err.println("index---complist---servlet");
 			listComp(req, resp);
+		} else if (pathString.equals("/buy")) {
+			System.err.println("complist---buy");
+			buyComp(req, resp);
+		} else if (pathString.equals("/deletecom")) {
+			deleteComp(req, resp);
 		}
 	}
+
+	// delete list computers
+	private void deleteComp(HttpServletRequest req, HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		try {
+			long userId = user.getUser_id();
+			String deleteIdString = req.getParameter("id");
+			if ("-1".equals(deleteIdString)) {
+				Cart.getInstance().deleteAllByUser(userId);
+			} else {
+				Cart.getInstance().deleteItem(Integer.parseInt(deleteIdString),
+						userId);
+			}
+			req.setAttribute("carts", Cart.getInstance().getList());
+			System.err.println("carts   size:"
+					+ Cart.getInstance().getList().size());
+
+			req.getRequestDispatcher("buycomplist.jsp").forward(req, resp);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	//buy list computers 
+	private void buyComp(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			long userId = user.getUser_id();
+			String array = req.getParameter("array");
+			System.err.println("array" + array);
+			if (array !=null&&!"".equals(array)) {
+				String[] split = array.split(";");
+				for (int i = 0; i < split.length; i++) {
+					if (split[i].startsWith(",")) {
+						split[i] = split[i].substring(1);
+					}
+					String idString = split[i].split(",")[0];
+					String numString = split[i].split(",")[1];
+					Cart.getInstance().updateItem(Integer.parseInt(idString),
+							Integer.parseInt(numString),userId);
+				}
+			}
+			req.setAttribute("carts", Cart.getInstance().getList());
+			System.err.println("carts   size:"
+					+ Cart.getInstance().getList().size());
+			req.getRequestDispatcher("buycomplist.jsp").forward(req, resp);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	// computer list
 	private void listComp(HttpServletRequest req, HttpServletResponse resp) {
 		java.util.List<Computer> list = new ComputerDao().findAll();
+		java.util.List<CartItem> cartItems=Cart.getInstance().getList();
 		try {
+			for (int i = 0; i < list.size(); i++) {
+				Computer computer=list.get(i);
+				for (int j = 0; j < cartItems.size(); j++) {
+					CartItem cartItem=cartItems.get(j);
+					if(cartItem.getComputer().getId()==computer.getId()){
+						computer.setBuynum(cartItem.getComputer().getBuynum());
+					}
+				}
+			}
 			req.setAttribute("computers", list);
 			req.getRequestDispatcher("complist.jsp").forward(req, resp);
 

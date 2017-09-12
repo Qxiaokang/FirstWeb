@@ -17,6 +17,7 @@
 			<td>name</td>
 			<td>pwd</td>
 		</tr>
+		
 		<% List<User> users=(List<User>)request.getAttribute("users"); 
 		for(int i=0;i<users.size();i++){
 				User user=users.get(i);
