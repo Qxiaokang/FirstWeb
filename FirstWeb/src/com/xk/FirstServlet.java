@@ -45,7 +45,7 @@ public class FirstServlet extends HttpServlet {
 	private ResultSet executeQuery;
 	private boolean isnull = false;
 	private Connection connection = null;
-	private User user=null;
+	private User user = null;
 	private java.util.List<Computer> computers = new ArrayList<Computer>();
 
 	public FirstServlet() {
@@ -75,16 +75,16 @@ public class FirstServlet extends HttpServlet {
 		String pathString = uriString.substring(uriString.lastIndexOf("/"),
 				uriString.lastIndexOf("."));
 		System.out.println("request---uriString:" + uriString);
-		//get init param
+		// get init param
 		ServletConfig servletConfig = getServletConfig();
 		String author = servletConfig.getInitParameter("author");
 		System.out.println("author:" + author);
-		HttpSession session=req.getSession();
+		HttpSession session = req.getSession();
 		if (session.getAttribute("user") == null) {
 			resp.sendRedirect("logina.html");
 			return;
 		}
-		user=(User) req.getSession().getAttribute("user");
+		user = (User) req.getSession().getAttribute("user");
 		if (pathString.equals("/first")) {
 			loadFirst(req, resp);
 		} else if (pathString.equals("/list")) {
@@ -101,6 +101,32 @@ public class FirstServlet extends HttpServlet {
 			buyComp(req, resp);
 		} else if (pathString.equals("/deletecom")) {
 			deleteComp(req, resp);
+		} else if (pathString.equals("/changeCity")) {
+			changeCity(req, resp);
+		}
+	}
+
+	// changeCity
+	private void changeCity(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			String message="";
+			String proviceString = req.getParameter("province");
+			resp.setContentType("text/html;charset=utf-8");
+			PrintWriter writer = resp.getWriter();
+			if("gd".equals(proviceString)){
+				message="gz,广州;st,汕头;zj,湛江;jm,江门;fs,佛山;sg,韶关;mm,茂名;zq,肇庆;hz,惠州;zh,珠海;sz,深圳;gz,潮州;zs,中山;dg,东莞;sw,汕尾;yj,阳江;hy,河源;mz,梅州;qy,清远;jy,揭阳;yf,云浮 ";
+			}else if ("hb".equals(proviceString)) {
+				message="wh,武汉市;sy,十堰市;xf,襄樊市;sz,随州市;jm,荆门市;xg,孝感市;yc,宜昌市;hg,黄冈市;ez,鄂州市;jz,荆州市;hs,黄石市;xn,咸宁市";
+			}else if ("hn".equals(proviceString)) {
+				message="cs,长沙;xt,湘潭;zz,株洲;bz,郴州;hy,衡阳;sy,邵阳;yz,永州;xx,湘西自治州;zjj,张家界;cd,常德;ld,娄底;yy,益阳;hh,怀化;yy,岳阳";
+			}else if ("js".equals(proviceString)) {
+				message="nj,南京;wx,无锡;xz,徐州;cz,常州;sz,苏州;nt,南通;lyg,连云港;ha,淮安;yc,盐城;yz,扬州;zj,镇江;tz,泰州;sq,宿迁";
+			}
+			writer.print(message);
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -127,13 +153,13 @@ public class FirstServlet extends HttpServlet {
 		}
 	}
 
-	//buy list computers 
+	// buy list computers
 	private void buyComp(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			long userId = user.getUser_id();
 			String array = req.getParameter("array");
 			System.err.println("array" + array);
-			if (array !=null&&!"".equals(array)) {
+			if (array != null && !"".equals(array)) {
 				String[] split = array.split(";");
 				for (int i = 0; i < split.length; i++) {
 					if (split[i].startsWith(",")) {
@@ -142,7 +168,7 @@ public class FirstServlet extends HttpServlet {
 					String idString = split[i].split(",")[0];
 					String numString = split[i].split(",")[1];
 					Cart.getInstance().updateItem(Integer.parseInt(idString),
-							Integer.parseInt(numString),userId);
+							Integer.parseInt(numString), userId);
 				}
 			}
 			req.setAttribute("carts", Cart.getInstance().getList());
@@ -159,13 +185,13 @@ public class FirstServlet extends HttpServlet {
 	// computer list
 	private void listComp(HttpServletRequest req, HttpServletResponse resp) {
 		java.util.List<Computer> list = new ComputerDao().findAll();
-		java.util.List<CartItem> cartItems=Cart.getInstance().getList();
+		java.util.List<CartItem> cartItems = Cart.getInstance().getList();
 		try {
 			for (int i = 0; i < list.size(); i++) {
-				Computer computer=list.get(i);
+				Computer computer = list.get(i);
 				for (int j = 0; j < cartItems.size(); j++) {
-					CartItem cartItem=cartItems.get(j);
-					if(cartItem.getComputer().getId()==computer.getId()){
+					CartItem cartItem = cartItems.get(j);
+					if (cartItem.getComputer().getId() == computer.getId()) {
 						computer.setBuynum(cartItem.getComputer().getBuynum());
 					}
 				}
@@ -267,9 +293,10 @@ public class FirstServlet extends HttpServlet {
 								+ nString + "'");
 				if (executeQuery.next()) {
 					System.err.println("has  next");
-					printWriter.print("<script type=" + "\"text/javascript\""
+					/*printWriter.print("<script type=" + "\"text/javascript\""
 							+ " charset=" + "\"utf-8\"" + ">window.alert("
-							+ "\"用户已存在，请重新添加！\"" + ")</script>");
+							+ "\"用户已存在，请重新添加！\"" + ")</script>");*/
+					printWriter.print("用户名已存在...");
 					printWriter.close();
 				} else {
 					sqlString = "insert into t_user(user_name,user_pwd) values('"

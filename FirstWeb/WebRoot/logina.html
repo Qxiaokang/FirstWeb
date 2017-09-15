@@ -111,6 +111,7 @@ input.button:active {
 </script>
 
 <script src="js/prefixfree.min.js"></script>
+
 <script type="text/javascript">
 	/**
 	 * 去掉输入空格
@@ -133,6 +134,7 @@ input.button:active {
 	function banInputSapce(e) {
 		var keynum;
 		if (window.event) // IE
+		
 		{
 			keynum = e.keyCode;
 		} else if (e.which) // Netscape/Firefox/Opera
@@ -145,6 +147,10 @@ input.button:active {
 		}
 		return true;
 	}
+	window.onload=function(){
+		window.console.log("onunload执行");
+		document.getElementById("hinttext").value="";
+	};
 </script>
 <script type="text/javascript">
 	var click = false;
@@ -218,6 +224,7 @@ input.button:active {
 		}
 		return true;
 	}
+
 </script>
 
 </head>

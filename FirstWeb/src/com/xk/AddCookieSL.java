@@ -24,7 +24,7 @@ public class AddCookieSL extends HttpServlet {
 		// TODO Auto-generated method stub
 		// super.service(req, resp);
 		try {
-			Thread.sleep(1000);
+			//Thread.sleep(1000);
 			resp.setContentType("text/html;charset=utf-8");
 			PrintWriter printWriter = resp.getWriter();
 			IUser iUser = (IUser) FactoryDao.getObject("User");

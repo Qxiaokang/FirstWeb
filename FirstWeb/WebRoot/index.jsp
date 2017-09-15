@@ -23,14 +23,62 @@
 <!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(e) {
+		var counter = 0;
+		if (window.history && window.history.pushState) {
+			$(window).on('popstate', function() {
+				window.history.pushState('forward', null, '#');
+				window.history.forward(1);
+				showConfirm();
+			});
+		}
+
+		window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+		window.history.forward(1);
+	});
+	/* jQuery(document).ready(function($) {
+
+	 if (window.history && window.history.pushState) {
+
+	 $(window).on('popstate', function() {
+	 var hashLocation = location.hash;
+	 var hashSplit = hashLocation.split("#!/");
+	 var hashName = hashSplit[1];
+
+	 if (hashName !== '') {
+	 var hash = window.location.hash;
+	 if (hash === '') {
+	 window.history.back(-1);
+	 }
+	 }
+	 });
+
+	 window.history.pushState('forward', null, './#forward');
+	 }
+
+	 }); */
+	 function showConfirm(){
+	 	var con=confirm("确认退出系统？");
+	 	if(con==true){
+	 		window.location.href="logina.html";
+	 	}else{
+	 		
+	 	}
+	 }
+</script>
 <%
 	Object object = session.getAttribute("user");
 	if (object == null) {
 %>
+
 <script type="text/javascript">
 	alert("请先登录！");
 	window.location = "logina.html";
 </script>
+
 <%
 	//response.sendRedirect("logina.html");
 	}
