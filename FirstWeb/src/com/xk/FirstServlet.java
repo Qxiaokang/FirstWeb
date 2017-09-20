@@ -28,10 +28,14 @@ import javax.servlet.http.HttpSession;
 import javax.swing.JEditorPane;
 import javax.xml.soap.Detail;
 
+import net.sf.json.JSONObject;
+
+import com.google.gson.Gson;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.xk.bean.Computer;
 import com.xk.bean.ComputerDao;
+import com.xk.bean.Province;
 import com.xk.bean.User;
 import com.xk.in.Cart;
 import com.xk.in.CartItem;
@@ -103,24 +107,53 @@ public class FirstServlet extends HttpServlet {
 			deleteComp(req, resp);
 		} else if (pathString.equals("/changeCity")) {
 			changeCity(req, resp);
+		} else if (pathString.equals("/changeDesp")) {
+			changeDescription(req, resp);
+		}
+	}
+
+	private void changeDescription(HttpServletRequest req,
+			HttpServletResponse resp) {
+		try {
+			String messageString = "";
+			String provinceString = req.getParameter("province");
+			resp.setContentType("text/html;charset=utf-8");
+			System.err.println("provincestring:"+provinceString);
+			PrintWriter writer = resp.getWriter();
+			if ("gd".equals(provinceString)) {
+				Province province = new Province(1,"GD",
+				"广东，名由岭南东道、广南东路演变而来，简称“粤”，省会广州，是中国大陆南端沿海的一个省份。");
+				Gson gson=new Gson();
+				String jsonString = gson.toJson(province);
+				writer.print(jsonString);
+			}else if ("hb".equals(provinceString)) {
+				Province province = new Province(2,"HB","湖北，简称“鄂”，是中华人民共和国省级行政区，省会为武汉，因位于长江中游、洞庭湖以北，故名湖北");
+				Gson gson=new Gson();
+				String jsonString = gson.toJson(province);
+				writer.print(jsonString);
+			}
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
 	// changeCity
 	private void changeCity(HttpServletRequest req, HttpServletResponse resp) {
 		try {
-			String message="";
+			String message = "";
 			String proviceString = req.getParameter("province");
 			resp.setContentType("text/html;charset=utf-8");
 			PrintWriter writer = resp.getWriter();
-			if("gd".equals(proviceString)){
-				message="gz,广州;st,汕头;zj,湛江;jm,江门;fs,佛山;sg,韶关;mm,茂名;zq,肇庆;hz,惠州;zh,珠海;sz,深圳;gz,潮州;zs,中山;dg,东莞;sw,汕尾;yj,阳江;hy,河源;mz,梅州;qy,清远;jy,揭阳;yf,云浮 ";
-			}else if ("hb".equals(proviceString)) {
-				message="wh,武汉市;sy,十堰市;xf,襄樊市;sz,随州市;jm,荆门市;xg,孝感市;yc,宜昌市;hg,黄冈市;ez,鄂州市;jz,荆州市;hs,黄石市;xn,咸宁市";
-			}else if ("hn".equals(proviceString)) {
-				message="cs,长沙;xt,湘潭;zz,株洲;bz,郴州;hy,衡阳;sy,邵阳;yz,永州;xx,湘西自治州;zjj,张家界;cd,常德;ld,娄底;yy,益阳;hh,怀化;yy,岳阳";
-			}else if ("js".equals(proviceString)) {
-				message="nj,南京;wx,无锡;xz,徐州;cz,常州;sz,苏州;nt,南通;lyg,连云港;ha,淮安;yc,盐城;yz,扬州;zj,镇江;tz,泰州;sq,宿迁";
+			if ("gd".equals(proviceString)) {
+				message = "gz,广州;st,汕头;zj,湛江;jm,江门;fs,佛山;sg,韶关;mm,茂名;zq,肇庆;hz,惠州;zh,珠海;sz,深圳;gz,潮州;zs,中山;dg,东莞;sw,汕尾;yj,阳江;hy,河源;mz,梅州;qy,清远;jy,揭阳;yf,云浮 ";
+			} else if ("hb".equals(proviceString)) {
+				message = "wh,武汉市;sy,十堰市;xf,襄樊市;sz,随州市;jm,荆门市;xg,孝感市;yc,宜昌市;hg,黄冈市;ez,鄂州市;jz,荆州市;hs,黄石市;xn,咸宁市";
+			} else if ("hn".equals(proviceString)) {
+				message = "cs,长沙;xt,湘潭;zz,株洲;bz,郴州;hy,衡阳;sy,邵阳;yz,永州;xx,湘西自治州;zjj,张家界;cd,常德;ld,娄底;yy,益阳;hh,怀化;yy,岳阳";
+			} else if ("js".equals(proviceString)) {
+				message = "nj,南京;wx,无锡;xz,徐州;cz,常州;sz,苏州;nt,南通;lyg,连云港;ha,淮安;yc,盐城;yz,扬州;zj,镇江;tz,泰州;sq,宿迁";
 			}
 			writer.print(message);
 			writer.close();
@@ -293,9 +326,11 @@ public class FirstServlet extends HttpServlet {
 								+ nString + "'");
 				if (executeQuery.next()) {
 					System.err.println("has  next");
-					/*printWriter.print("<script type=" + "\"text/javascript\""
-							+ " charset=" + "\"utf-8\"" + ">window.alert("
-							+ "\"用户已存在，请重新添加！\"" + ")</script>");*/
+					/*
+					 * printWriter.print("<script type=" + "\"text/javascript\""
+					 * + " charset=" + "\"utf-8\"" + ">window.alert(" +
+					 * "\"用户已存在，请重新添加！\"" + ")</script>");
+					 */
 					printWriter.print("用户名已存在...");
 					printWriter.close();
 				} else {

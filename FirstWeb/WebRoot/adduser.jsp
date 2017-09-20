@@ -79,6 +79,9 @@ select {
 	background-color: green;
 	position: relative;
 }
+#describe{
+	display: none;
+}
 </style>
 <script type="text/javascript" src="js/prototype-1.7.js"></script>
 <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
@@ -223,6 +226,7 @@ select {
 		};
 		xhr.send(null);
 	}
+
 	//jquery修改样式
 	function changeJquery() {
 		var $j = jQuery.noConflict();
@@ -273,7 +277,31 @@ select {
 			});
 		});
 	});
-
+	$(function() {
+	var $q = jQuery.noConflict();
+		$q("#sele").change(function(){
+			$q.ajax(
+				{
+					"url":"changeDesp.do",
+					"type":"post",
+					"data":{"province":$q("#sele").val()},
+					"dataType":"json",
+					"success":
+					function(data,statusText){
+						$q("#describe").html("描述："+data.description);
+						$q("#describe").slideDown("snow");
+						setTimeout(function(){
+						$q("#describe").slideUp();
+						}, 2000);
+					},
+					"error":
+					function(xhr,e1,e2){
+						alter("系统错误！");
+					}
+				}
+			);
+		});
+	});
 	window.onload = changeCity("gd");
 </script>
 
@@ -304,6 +332,7 @@ select {
 					<option value="js">江苏</option>
 				</select><select id="sc" style="margin-left: 10px;"></select>
 			</div>
+			<div class="con" id="describe"></div>
 			<div class="con">
 				<span class="sp">验证码</span><input type="text" id="codetext"
 					size="10" /> <img src="checkCode.do" id="img1"> <a
